@@ -1,0 +1,44 @@
+.dateAndAmount{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-top: 1px solid var(--button-border-color);
+    >.calendar{
+        font-size: 12px;
+        display:flex;
+        justify-content: start;
+        align-items: center;
+        color: var(--date-text);
+        >.icon{
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
+    }
+    >.amount{
+        font-size: 20px;
+        font-family: monospace;
+        color: var(--amount-text);
+    }
+}
+
+.buttons{
+    display: flex;
+    flex-wrap: wrap;
+    border-left:1px solid var(--button-border-color);
+    border-top: 1px solid var(--button-border-color);
+    >button{
+        border: none;
+        width: 25%;
+        height: 48px;
+        border-bottom: 1px solid var(--button-border-color);
+        border-right: 1px solid var(--button-border-color);
+        background: transparent;
+        &:nth-child(4n){
+        border-right: none;
+        }
+    }
+
+
+}

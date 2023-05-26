@@ -6,28 +6,45 @@ import { Center } from "../shared/Center";
 import { Icon } from "../shared/Icon";
 import { Navbar } from "../shared/Navbar";
 import { Overlay } from "../shared/Overlay";
+import { RouterLink } from "vue-router";
+import { MainLayout } from "../layouts/MainLayout";
 export const StartPage = defineComponent({
-    setup:(props, context) =>{
+    setup: (props, context) => {
         let refOverlayVisible = ref(false)
-        const onClickMenu =()=>[
+        const onClickMenu = () => [
             refOverlayVisible.value = !refOverlayVisible.value
         ]
-        return ()=>(
-            <>
-            <Navbar>
+        return () => (
+            <MainLayout>
                 {
-                    {default:()=>"小熊熊记账",icon: <Icon onclick={onClickMenu} class={s.navIcon} name="menu"/> }
+                    {
+                        title: () => '开始记账',
+                        icon: () => (<Icon onClick={onClickMenu} class={s.navIcon} name="menu" />),
+                        default: () => (<>
+                            <Center class={s.pig_wrapper}>
+                                <Icon name='piggy' class={s.pig} />
+                            </Center>
+                            <div class={s.button_wrapper}>
+                                <RouterLink to="/items/create">
+                                    <Button class={s.button} >开始记账</Button>
+                                </RouterLink>
+                                <RouterLink to="/items/create">
+                                    <FloatButton iconName='add' />
+                                </RouterLink>
+                            </div>
+                            {refOverlayVisible.value && <Overlay onClose={() => refOverlayVisible.value = false} />}
+                        </>
+                        )
+                    }
                 }
-            </Navbar>
-            <Center class={s.pig_wrapper}>
-                <Icon name='piggy' class={s.pig}/>
-            </Center>
-            <div class={s.button_wrapper}>
-                <Button class={s.button} >开始记账</Button>
-                <FloatButton iconName='add'/>
-            </div>
-            {refOverlayVisible.value && <Overlay onClose={() => refOverlayVisible.value = false}/>}
-            </>
+            </MainLayout>
         )
     }
-})
+}
+)
+
+
+
+
+
+

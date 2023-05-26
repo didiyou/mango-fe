@@ -1,0 +1,14 @@
+.Icon{
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top: 2px;
+    fill: var(--navbar-text);
+}
+.inputPad_wrapper{
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    border: 1px solid red;
+    width: 100%;
+}
