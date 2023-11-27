@@ -8,10 +8,11 @@ type State = {
   page: number
 }
 type Actions = {
-    _fetch: (firstPage:boolean, startDate:string, endDate:string) => void
+    _fetch: (firstPage:boolean, startDate?:string, endDate?:string) => void
     fetchItems: (startDate?: string, endDate?: string)=> void
-    fetchNextPage: (startDate:string, endDate:string) => void}
+    fetchNextPage: (startDate?:string, endDate?:string) => void}
 
+const DAY = 86400
 
 export const useItemStore = (id:string)=> {
     return defineStore<string, State, {}, Actions>(id, {
@@ -40,17 +41,17 @@ export const useItemStore = (id:string)=> {
               if(firstPage){
                 this.items = resources
               }else{
-                this.items?.push(...resources)
+                this.items.push(...resources)
               }
               this.hasMore = (pager.page - 1) * pager.per_page + resources.length < pager.count
               this.page += 1
           },
 
           async fetchItems(startDate, endDate) {
-            this._fetch(false, startDate, endDate)
+            this._fetch(true, startDate, endDate)
           },
           fetchNextPage(startDate, endDate){
-            this._fetch(true, startDate, endDate)
+            this._fetch(false, startDate, endDate)
           }
         }
       })()
