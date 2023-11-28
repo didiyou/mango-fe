@@ -21,22 +21,21 @@ app.use(router)
 app.use(createPinia())
 app.mount('#app')
 
-
 const meStore = useMeStore()
 meStore.fetchMe()
 
-router.beforeEach((to, from) => {
-  for (const key in whiteList) {
-    const value = whiteList[key]
-    if (value === 'exact' && to.path === key) {
-      return true
-    }
-    if (value === 'startsWith' && to.path.startsWith(key)) {
-      return true
-    }
-  }
-  return meStore.mePromise!.then(
-    () => true,
-    () => '/sign_in?return_to=' + from.path
-  ) 
-})
+// router.beforeEach((to, from) => {
+//   for (const key in whiteList) {
+//     const value = whiteList[key]
+//     if (value === 'exact' && to.path === key) {
+//       return true
+//     }
+//     if (value === 'startsWith' && to.path.startsWith(key)) {
+//       return true
+//     }
+//   }
+//   return meStore.mePromise!.then(
+//     () => true,
+//     () => '/sign_in?return_to=' + from.path
+//   ) 
+// })

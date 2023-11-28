@@ -8,3 +8,4 @@ export const ItemList = defineComponent({
     )
   }
 })
+export default ItemList

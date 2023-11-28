@@ -14,6 +14,7 @@ import { ThirdActions } from "../components/welcome/ThirdActions";
 import { StatisticsPage } from "../views/StatisticsPage";
 import {ComingSoon} from '../shared/ComingSoon'
 
+
 export const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/welcome' },
   {
@@ -33,16 +34,16 @@ export const routes: RouteRecordRaw[] = [
   // { path: '/start', component: StartPage },
   {
     path: '/items', component: ()=> import('../views/ItemPage'),
-    children: [
-      { path: '', component: ItemList },
-      { path: 'create', component: ItemCreate },
+    children: [   
+      { path: '', component: ()=> import('../../src/components/item/ItemList') },
+      { path: 'create', component: ()=> import('../../src/components/item/ItemCreate') },
     ]
   },
   {
     path: '/tags', component: ()=> import('../views/TagPage'),
     children: [
-      { path: 'create', component: TagCreate },
-      { path: ':id/edit', component: TagEdit }
+      { path: 'create', component: ()=> import('../components/tag/TagCreate') },
+      { path: ':id/edit', component: ()=> import('../components/tag/TagEdit') }
     ]
   },
   {
