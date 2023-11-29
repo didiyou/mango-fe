@@ -1,6 +1,5 @@
 import { Overlay } from 'vant'
 import { Component, DefineComponent, defineComponent, PropType, reactive, ref } from 'vue'
-import { ItemSummary } from '../components/item/ItemSummary'
 import { Form, FormItem } from '../shared/Form'
 import { OverlayIcon } from '../shared/Overlay'
 import { Tab, Tabs } from '../shared/Tabs'
@@ -19,7 +18,7 @@ const demo = defineComponent({
     }
   }
 })
-export const TimeTabsLayout = defineComponent({
+export const  TimeTabsLayout = defineComponent({
   props: {
     component: {
       type: Object as PropType<typeof demo>,
@@ -73,7 +72,7 @@ export const TimeTabsLayout = defineComponent({
     return () => (
       <MainLayout>
         {{
-          title: () => '山竹记账',
+          title: () => '享记账',
           icon: () => <OverlayIcon />,
           default: () => (
             <>

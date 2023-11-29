@@ -1,10 +1,12 @@
 import { Dialog } from 'vant'
-import { defineComponent, onMounted, PropType, ref } from 'vue'
+import { defineComponent, onMounted, PropType, ref, Transition } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { Icon } from './Icon'
 import s from './Overlay.module.scss'
 import {useMeStore} from '../../src/stores/useMeStore'
+import {useRouteStore} from '../../src/stores/useRouteStore'
 import { User } from '../env'
+import { LineChart } from '../components/statistics/LineChart'
 
 export const Overlay = defineComponent({
   props: {
@@ -31,10 +33,18 @@ export const Overlay = defineComponent({
         localStorage.removeItem('jwt')
         window.location.reload()
       })
-      
     }
+    const navNames:{to:string, IconName:"pokemon"|"charts"|"export"|"notify", name:string}[] = [
+      {to: "/items", IconName: "pokemon", name: "记账"},
+      {to: "/statistics", IconName: "charts", name: "统计图表"},
+      {to: "/export", IconName: "export", name: "导出数据"},
+      {to: "/notify", IconName: "notify", name: "记账提醒"},
+    ]
+    const routeStore = useRouteStore()
+    routeStore.getCurrentRoute()
+    console.log(routeStore.route)
     return () => (
-      <>
+      <div>
         <div class={s.mask} onClick={close}></div>
         <div class={s.overlay}>
           <section class={s.currentUser}>
@@ -52,34 +62,18 @@ export const Overlay = defineComponent({
           </section>
           <nav>
             <ul class={s.action_list}>
-              <li>
-                <RouterLink to="/items" class={s.action}>
-                  <Icon name="pokemon" class={s.icon} />
-                  <span>记账</span>
+            {
+              navNames.map((item)=> <li>
+                <RouterLink to={item.to} class={[s.action, item.to === routeStore.route? s.selected: '']}>
+                  <Icon name={item.IconName} class={s.icon} />
+                  <span>{item.name}</span>
                 </RouterLink>
-              </li>
-              <li>
-                <RouterLink to="/statistics" class={s.action}>
-                  <Icon name="charts" class={s.icon} />
-                  <span>统计图表</span>
-                </RouterLink>
-              </li>
-              <li>
-                <RouterLink to="/export" class={s.action}>
-                  <Icon name="export" class={s.icon} />
-                  <span>导出数据</span>
-                </RouterLink>
-              </li>
-              <li>
-                <RouterLink to="/notify" class={s.action}>
-                  <Icon name="notify" class={s.icon} />
-                  <span>记账提醒</span>
-                </RouterLink>
-              </li>
+              </li>)
+            }
             </ul>
           </nav>
         </div>
-      </>
+      </div>
     )
   },
 })
@@ -93,9 +87,10 @@ export const OverlayIcon = defineComponent({
     return () => (
       <>
         <Icon name="menu" class={s.icon} onClick={onClickMenu} />
-        {refOverlayVisible.value && (
-          <Overlay onClose={() => (refOverlayVisible.value = false)} />
-        )}
+        <Transition enterFromClass={s.side_enter_from} enterActiveClass={s.side_enter_active} 
+                  leaveToClass={s.side_leave_to} leaveActiveClass={s.side_leave_active}>
+          {refOverlayVisible.value && <Overlay onClose={() => (refOverlayVisible.value = false)} />}
+        </Transition>
       </>
     )
   },
