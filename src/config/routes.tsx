@@ -13,6 +13,7 @@ import { Third } from "../components/welcome/Third";
 import { ThirdActions } from "../components/welcome/ThirdActions";
 import { StatisticsPage } from "../views/StatisticsPage";
 import {ComingSoon} from '../shared/ComingSoon'
+import SignInPage from "../views/SignInPage";
 
 
 export const routes: RouteRecordRaw[] = [
@@ -47,11 +48,11 @@ export const routes: RouteRecordRaw[] = [
     ]
   },
   {
-    path: '/sign_in', component: ()=> import('../views/SignInPage')
+    path: '/sign_in', component: SignInPage
   },
-  {
-    path: '/statistics', component: ()=> import('../views/StatisticsPage')
-  },
+{
+    path: '/statistics', component: StatisticsPage
+},
   {path: '/export', component: ()=> import('../../src/shared/ComingSoon')},
   {path: '/notify', component: ()=> import('../../src/shared/ComingSoon')}
 ]

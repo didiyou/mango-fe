@@ -6,6 +6,7 @@ import { Icon } from '../../shared/Icon';
 import { useTags } from '../../shared/useTags';
 import s from './Tags.module.scss';
 import { Resources, Tag } from '../../env';
+import { useBool } from '../../hooks/useBool';
 export const Tags = defineComponent({
   props: {
     kind: {
@@ -22,9 +23,11 @@ export const Tags = defineComponent({
         page: page + 1,
       }, {_mock: 'tagIndex', _autoLoading: true});
     });
+    const pick = useBool(false)
     const onSelect = (tag: Tag) => {
-      context.emit('update:selected', tag.id);
-    };
+      pick.toggle()
+      pick.ref.value ? context.emit('update:selected', tag.id) : context.emit('update:selected', NaN)
+    }
     const timer = ref<number>()
     const currentTag = ref<HTMLDivElement>()
 
@@ -59,8 +62,8 @@ export const Tags = defineComponent({
           </RouterLink>
           {tags.value.map((tag) => (
             <div
-              class={[s.tag, props.selected === tag.id ? s.selected : '']}
-              onClick={() => onSelect(tag)}
+              class={[s.tag, props.selected === tag.id ? s.selected : '']} 
+              onClick={()=> onSelect(tag)}
               onTouchstart={(e)=>onTouchStart(e, tag)}
               onTouchend={onTouchEnd}
             >
