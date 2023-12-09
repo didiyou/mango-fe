@@ -46,6 +46,7 @@ export default defineConfig(({ command })=> {return {
       '/api/v1': {
         target: 'http://121.196.236.94:3000/',
       }
-    }
+    },
+    hmr:true
   }
 }})
