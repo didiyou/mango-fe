@@ -1,5 +1,5 @@
 import { Dialog } from 'vant'
-import { defineComponent, onMounted, PropType, ref, Teleport, Transition } from 'vue'
+import { defineComponent, onMounted, PropType, ref, Teleport, Transition} from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { Icon } from './Icon'
 import s from './Overlay.module.scss'
@@ -21,7 +21,6 @@ export const Overlay = defineComponent({
     const meStore = useMeStore()
     const close = () => {
       props.onClose?.()
-      console.log('关闭侧边栏')
     }
     const route = useRoute()
     const me = ref<User>()
@@ -47,42 +46,13 @@ export const Overlay = defineComponent({
     const routeStore = useRouteStore()
     routeStore.getCurrentRoute()
     return () => (
-      
+      <>
+      <div v-show={props.show} class={s.mask} onClick={close}></div>
       <Transition enterFromClass={s.side_enter_from} enterActiveClass={s.side_enter_active} 
       leaveToClass={s.side_leave_to} leaveActiveClass={s.side_leave_active}>
-        <div v-show={props.show} class={s.wrapper}>
 
-        <div  class={s.mask} onClick={close}></div>
-        <div  class={s.overlay}>
-          <section class={s.currentUser}>
-            {me.value ? (
-              <div>
-                <h2 class={s.email}>{me.value.email}</h2>
-                <p onClick={onSignOut}>点击这里退出登录</p>
-              </div>
-            ) : (
-              <RouterLink to={`/sign_in?return_to=${route.fullPath}`}>
-                <h2>未登录用户</h2>
-                <p>点击这里登录</p>
-              </RouterLink>
-            )}
-          </section>
-          <nav>
-            <ul class={s.action_list}>
-            {
-              navNames.map((item)=> <li>
-                <RouterLink to={item.to} class={[s.action, item.to === routeStore.route? s.selected: '']}>
-                  <Icon name={item.IconName} class={s.icon} />
-                  <span>{item.name}</span>
-                </RouterLink>
-              </li>)
-            }
-            </ul>
-          </nav>
-        </div>
-
-        </div>
-        {/* <div v-show={props.show} class={s.mask} onClick={close}></div>
+        {/* <div v-show={props.show} class={s.wrapper}> */}
+        {/* <div  class={s.mask} onClick={close}></div> */}
         <div v-show={props.show} class={s.overlay}>
           <section class={s.currentUser}>
             {me.value ? (
@@ -109,10 +79,10 @@ export const Overlay = defineComponent({
             }
             </ul>
           </nav>
-        </div> */}
-        
+        </div>
+        {/* </div> */}
       </Transition>
-      
+      </>
     )
   }
   
@@ -128,7 +98,7 @@ export const OverlayIcon = defineComponent({
       <>
         <Icon name="menu" class={s.icon} onClick={onClickMenu} />
         <Teleport to="body">
-       <Overlay show={refOverlayVisible.value} onClose={() => {refOverlayVisible.value = false; console.log(refOverlayVisible.value)}} />
+       <Overlay show={refOverlayVisible.value} onClose={() => refOverlayVisible.value = false} />
         </Teleport>
       </>
     )
