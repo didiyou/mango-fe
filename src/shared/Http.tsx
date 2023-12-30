@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { mockItemCreate, mockItemIndex, mockItemIndexBalance, mockItemSummary, mockSession, mockTagEdit, mockTagIndex, mockTagShow } from "../mock/mock";
+import { mockItemCreate, mockItemIndex, mockItemIndexBalance, mockItemSummary, mockSession, mockTagEdit, mockTagIndex, mockTagShow, mockValidationCodes } from "../mock/mock";
 import { Toast } from "vant";
 import { JSONValue } from "../env";
 
@@ -55,6 +55,9 @@ const mock = (response: AxiosResponse) => {
       return true
     case 'itemSummary':
       [response.status, response.data] = mockItemSummary(response.config)
+      return true
+    case 'validationCodes':
+      [response.status, response.data] = mockValidationCodes(response.config)
       return true
   }
   return false
@@ -123,3 +126,5 @@ http.instance.interceptors.response.use((response)=>{
   Toast.clear()
   throw error
 })
+
+

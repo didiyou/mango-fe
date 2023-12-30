@@ -16,6 +16,7 @@ import {ComingSoon} from '../shared/ComingSoon'
 import SignInPage from "../views/SignInPage";
 
 
+
 export const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/welcome' },
   {

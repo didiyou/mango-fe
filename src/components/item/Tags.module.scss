@@ -24,14 +24,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    &.selected {
+        border-color: var(--main);
+    }
   }
   .name {
     font-size: 12px;
     margin-top: 4px;
-  }
-  &.selected {
-    .sign {
-      border-color: var(--main);
-    }
   }
 }

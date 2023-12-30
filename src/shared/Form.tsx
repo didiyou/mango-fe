@@ -42,7 +42,7 @@ export const FormItem = defineComponent({
       default: 60
     },
     disabled: Boolean,
-  },
+  }, 
   emits: ['update:modelValue'],
   setup: (props, context) => {
     const refDateVisible = ref(false)
@@ -68,7 +68,7 @@ export const FormItem = defineComponent({
             onInput={(e: any) => context.emit('update:modelValue', e.target.value)}
             class={[s.formItem, s.input]} />
         case 'emojiSelect':
-          return <EmojiSelect
+          return <EmojiSelect 
             modelValue={props.modelValue?.toString()}
             onUpdateModelValue={value => context.emit('update:modelValue', value)}
             class={[s.formItem, s.emojiList, s.error]} />

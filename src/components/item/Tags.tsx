@@ -62,12 +62,12 @@ export const Tags = defineComponent({
           </RouterLink>
           {tags.value.map((tag) => (
             <div
-              class={[s.tag, props.selected === tag.id ? s.selected : '']} 
-              onClick={()=> onSelect(tag)}
+              class={s.tag}
+              onClick={(e)=> e.preventDefault()}
               onTouchstart={(e)=>onTouchStart(e, tag)}
               onTouchend={onTouchEnd}
             >
-              <div class={s.sign}>{tag.sign}</div>
+              <div class={[s.sign, props.selected === tag.id ? s.selected : '']} onClick={()=> onSelect(tag)}>{tag.sign}</div>
               <div class={s.name}>{tag.name}</div>
             </div>
           ))}

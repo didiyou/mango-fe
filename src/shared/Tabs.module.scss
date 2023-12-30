@@ -1,5 +1,7 @@
 .tabs {
   position: relative;
+  height: calc(100vh - 88px);
+  overflow: auto;
   &_nav {
     display: flex;
     justify-content: space-between;

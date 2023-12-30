@@ -200,3 +200,10 @@ export const mockTagIndex: Mock = (config) => {
     return [200, createBody(1)]
   }
 }
+
+export const mockValidationCodes:Mock = (config) => {
+  return [
+    200,
+    null
+  ]
+}

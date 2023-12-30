@@ -1,10 +1,10 @@
 import { defineComponent, PropType } from 'vue';
 import s from './Center.module.scss';
 const directionMap = {
-  '-': 'horizontal',
-  '|': 'vertical',
+  '-': s.horizontal,
+  '|': s.vertical,
   'horizontal': 'horizontal',
-  'vertical': 'vertical'
+  'vertical': s.vertical
 }
 export const Center = defineComponent({
   props: {
@@ -16,7 +16,7 @@ export const Center = defineComponent({
   setup: (props, context) => {
     const extraClass = directionMap[props.direction]
     return () => (
-      <div class={[s.center, s.extraClass]}>{
+      <div class={[s.center, s[extraClass]]}>{
         context.slots.default?.()
       }</div>
     )

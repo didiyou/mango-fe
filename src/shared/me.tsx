@@ -1,5 +1,6 @@
 import { AxiosResponse } from "axios";
 import { http } from "./Http"
+import { Resource, User } from "../env";
 
 export let mePromise: Promise<AxiosResponse<Resource<User>>> | undefined
 

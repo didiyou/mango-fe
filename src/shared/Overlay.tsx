@@ -51,8 +51,6 @@ export const Overlay = defineComponent({
       <Transition enterFromClass={s.side_enter_from} enterActiveClass={s.side_enter_active} 
       leaveToClass={s.side_leave_to} leaveActiveClass={s.side_leave_active}>
 
-        {/* <div v-show={props.show} class={s.wrapper}> */}
-        {/* <div  class={s.mask} onClick={close}></div> */}
         <div v-show={props.show} class={s.overlay}>
           <section class={s.currentUser}>
             {me.value ? (
@@ -80,7 +78,6 @@ export const Overlay = defineComponent({
             </ul>
           </nav>
         </div>
-        {/* </div> */}
       </Transition>
       </>
     )

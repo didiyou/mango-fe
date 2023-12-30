@@ -32,7 +32,7 @@ export const Tabs = defineComponent({
               item.props?.value === props.selected ? [s.selected, cp + '_selected'] : '',
               cp + '_tabs_nav_item'
             ]}
-              onClick={() => context.emit('update:selected', item.props?.value)}
+              onClick={() => {context.emit('update:selected', item.props?.value);console.log(props.selected)}}
             >
               {item.props?.name}
             </li>)}

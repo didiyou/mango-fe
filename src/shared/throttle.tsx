@@ -12,4 +12,4 @@ export const throttle = <T extends ((...args: unknown[]) => any)>(fn: T, time: n
       return result
     }
   }
-}
+} 

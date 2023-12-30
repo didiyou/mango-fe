@@ -1,5 +1,5 @@
 
-import { defineComponent, PropType, reactive, ref } from 'vue';
+import { defineComponent, type Component, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useBool } from '../hooks/useBool';
 import { MainLayout } from '../layouts/MainLayout';
@@ -24,8 +24,13 @@ export const SignInPage = defineComponent({
       email: [],
       code: []
     })
-    const refValidationCode = ref<any>()
-    const { ref: refDisabled, toggle, on: disabled, off: enable } = useBool(false)
+    const demo = defineComponent({
+      setup (props, ctx) {
+        const startCount = ()=>{}
+  }
+  })
+    const refValidationCode = ref<typeof demo>()
+    const { ref: refDisabled, on: disabled, off: enable } = useBool(false)
     const router = useRouter()
     const route = useRoute()
     const onSubmit = async (e: Event) => {
@@ -55,14 +60,14 @@ export const SignInPage = defineComponent({
       throw error
     }
     const onClickSendValidationCode = async () => {
-
+      
       disabled()
       const response = await http
         .post('/validation_codes', { email: formData.email }, { _autoLoading: true})
         .catch(onError)
         .finally(enable)
       // 成功
-      refValidationCode.value.startCount()
+      refValidationCode.value?.startCount()
 
     }
     return () => (
@@ -73,8 +78,8 @@ export const SignInPage = defineComponent({
           default: () => (
             <div class={s.wrapper}>
               <div class={s.logo}>
-                <Icon class={s.icon} name="watermelon" />
-                <h1 class={s.appName}>山竹记账</h1>
+                <Icon class={s.icon} name="cherry" />
+                <h1 class={s.appName}>享记账</h1>
               </div>
               <Form onSubmit={onSubmit}>
                 <FormItem label="邮箱地址" type="text"
@@ -82,7 +87,7 @@ export const SignInPage = defineComponent({
                   v-model={formData.email} error={errors.email?.[0]} />
                 <FormItem ref={refValidationCode} label="验证码" type="validationCode"
                   placeholder='请输入六位数字'
-                  countFrom={1}
+                  countFrom={30}
                   disabled={refDisabled.value}
                   onClick={onClickSendValidationCode}
                   v-model={formData.code} error={errors.code?.[0]} />
@@ -97,4 +102,5 @@ export const SignInPage = defineComponent({
     )
   }
 })
+
 export default SignInPage
