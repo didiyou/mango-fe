@@ -30,7 +30,8 @@ export class Http {
 }
 
 const mock = (response: AxiosResponse) => {
-  if (!isDev()) { return false }
+  //if (!isDev()) { return false }
+  return false
   switch (response.config?._mock) {
     case 'tagIndex':
       [response.status, response.data] = mockTagIndex(response.config)
@@ -76,7 +77,7 @@ http.instance.interceptors.request.use(config => {
   const jwt = localStorage.getItem('jwt')
   if (jwt) {
     config.headers!.Authorization = `Bearer ${jwt}`
-  }
+  } 
   if(config._autoLoading === true){
     Toast.loading({
       message: '加载中...',

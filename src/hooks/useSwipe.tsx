@@ -53,16 +53,22 @@ export const useSwipe = (element: Ref<HTMLElement | undefined>, options?: Option
 
   onMounted(() => {
     if (!element.value) { return }
+    console.log('add listen')
     element.value.addEventListener('touchstart', onStart)
     element.value.addEventListener('touchmove', onMove)
     element.value.addEventListener('touchend', onEnd)
   })
   onUnmounted(() => {
+    
     if (!element.value) { return }
+    console.log('remove listen')
     element.value.removeEventListener('touchstart', onStart)
     element.value.removeEventListener('touchmove', onMove)
     element.value.removeEventListener('touchend', onEnd)
   })
+
+
+
   return {
     swiping,
     direction,

@@ -94,7 +94,6 @@ export const  TimeTabsLayout = defineComponent({
                     <props.component startDate={customTime.start} endDate={customTime.end} />
                   </Tab>
                 </Tabs>
-                
               ) : (
                 <Tabs
                   classPrefix="customTabs"

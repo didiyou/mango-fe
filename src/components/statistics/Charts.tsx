@@ -47,11 +47,10 @@ export const Charts = defineComponent({
         happen_before: props.endDate,
         kind: kind.value,
         group_by: 'happen_at'
-      }, {_mock: 'itemSummary', _autoLoading: true})
+      }, {_autoLoading: true})
       data1.value = response.data.groups
     }
-    onMounted(fetchData1)
-    watch(() => kind.value, fetchData1)
+    watch([kind, ()=> props.startDate, ()=> props.endDate], fetchData1, { immediate: true })
 
     const data2 = ref<Data2>([])
     const betterData2 = computed<{ name: string; value: number }[]>(() =>
@@ -75,11 +74,11 @@ export const Charts = defineComponent({
         happen_before: props.endDate,
         kind: kind.value,
         group_by: 'tag_id'
-      }, {_mock: 'itemSummary', _autoLoading: true})
+      }, {_autoLoading: true})
       data2.value = response.data.groups
     }
-    onMounted(fetchData2)
-    watch(() => kind.value, fetchData2)
+
+    watch([kind, ()=> props.startDate, ()=> props.endDate], fetchData2, { immediate: true })
     return () => (
       <div class={s.wrapper}>
         <FormItem

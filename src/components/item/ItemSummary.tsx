@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, PropType, reactive, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, PropType, reactive, ref, watch } from 'vue'
 import { Button } from '../../shared/Button'
 import { Datetime } from '../../shared/Datetime'
 import { FloatButton } from '../../shared/FloatButton'
@@ -10,6 +10,8 @@ import { Center } from '../../shared/Center'
 import { Icon } from '../../shared/Icon'
 import {useAfterMe} from '../../hooks/useAfterMe'
 import {useItemStore} from '../../../src/stores/useItemStore'
+import { useSlide } from '../../hooks/useSlide'
+import { Dialog } from 'vant'
 
 export const ItemSummary = defineComponent({
   props: {
@@ -26,6 +28,34 @@ export const ItemSummary = defineComponent({
     const itemStore = useItemStore(`items-${props.startDate}-${props.endDate}`)
     useAfterMe(()=> itemStore.fetchItems(props.startDate, props.endDate))
 
+    const onError = () => {
+      Dialog.alert({ title: '提示', message: '删除失败' })
+    }
+
+    const refItem = ref<HTMLElement>()
+    const {direction, LiIndex} = useSlide(refItem)
+    const remove = async(Itemid:number)=>{
+      console.log('点击删除')
+      await http
+      .delete(`/items/${Itemid}`, {}, {_autoLoading: true})
+      .catch(onError)
+      fetchItemsBalance()
+      itemStore.$reset()
+      itemStore.fetchItems(props.startDate, props.endDate)
+    }
+    
+    const revokeRM = ref(false)
+
+    const revoke = function(index:number) {
+      console.log('点击左边')
+      if(index === LiIndex.value && leftSlide.value===true){revokeRM.value = true}
+      else {revokeRM.value = false}
+     }
+
+     const leftSlide = computed<boolean>(()=>{
+      if(!revokeRM.value && direction.value==='left'){revokeRM.value = false; return true}
+      else{return false}
+    })
     watch(()=>[props.startDate,props.endDate], ()=>{
       itemStore.$reset()
       itemStore.fetchItems(props.startDate, props.endDate)
@@ -38,7 +68,7 @@ export const ItemSummary = defineComponent({
       if(!props.startDate || !props.endDate){ return }
       const response = await http.get('/items/balance', {
         happen_after: props.startDate,
-        happen_before: props.endDate}, {_mock: 'itemIndexBalance'})
+        happen_before: props.endDate})
       Object.assign(itemsBalance, response.data)
     }
     useAfterMe(fetchItemsBalance)
@@ -48,6 +78,7 @@ export const ItemSummary = defineComponent({
       })
       fetchItemsBalance()
     })
+
     return () => (
       (!props.startDate || !props.endDate) ? 
       <div>请先选择时间范围</div> : 
@@ -68,9 +99,10 @@ export const ItemSummary = defineComponent({
                 <Money value={itemsBalance.balance} />
               </li>
             </ul>
-            <ol class={s.list}>
-              {itemStore.items.map((item) => (
-                <li>
+            <ol class={s.list} ref={refItem}>
+              {itemStore.items.map((item, index) => (
+                <li data-index={(leftSlide.value && index===LiIndex.value) ? 'true':'false'}>
+                  <div class={s.click} onClick={()=>revoke(index)}>
                   <div class={s.sign}>
                     <span>{item.tags!.length > 0 ? item.tags![0].sign: '〰️'}</span>
                   </div>
@@ -81,6 +113,8 @@ export const ItemSummary = defineComponent({
                     </div>
                     <div class={s.time}><Datetime value={item.happen_at}/></div>
                   </div>
+                  </div>
+                  <div class={s.remove} onClick={()=> remove(item.id)}>删除</div>
                 </li>
               ))}
             </ol>
