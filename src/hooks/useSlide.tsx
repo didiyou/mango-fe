@@ -25,10 +25,8 @@ export const useSlide = (element: Ref<HTMLElement | undefined>) => {
 
   const direction = computed(() => {
     if (!distance.value || !currentTag.value || pressTime < 1) {
-      console.log('pressTime',pressTime)
       return ''
     }
-    console.log(pressTime)
     const { x, y } = distance.value
     const LiList = Array.from(currentTag.value!.children)
     for (let index = 0; index < LiList.length; index++) {
@@ -46,7 +44,7 @@ export const useSlide = (element: Ref<HTMLElement | undefined>) => {
   let pressTime = 0
   let pressTimer = 0
   const onStart = (e: TouchEvent) => {
-    console.log('touch')
+    e.preventDefault()
     pressTime = 0
     currentTag.value = e.currentTarget as HTMLOListElement
     pressTimer = setInterval(() => {
@@ -64,10 +62,10 @@ export const useSlide = (element: Ref<HTMLElement | undefined>) => {
     endPointed.value = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY)
   }
   const onEnd = (e: TouchEvent) => {
+    e.preventDefault()
     clearInterval(pressTimer)
     const target = e.target as HTMLElement
-    console.log(target)
-    if(pressTime<1 && target.parentNode?.nodeName.toLowerCase() === 'li'){console.log('yes');target.click()}
+    if(pressTime<1 && target.parentNode?.nodeName.toLowerCase() === 'li'){target.click()}
     swiping.value = false
   } 
 

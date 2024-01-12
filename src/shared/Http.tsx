@@ -71,7 +71,8 @@ function isDev(){
   return true
 }
 
-export const http = new Http(isDev() ?  '/api/v1' : 'http://xxx.xxx.xxx.xx:3000')
+// export const http = new Http(isDev() ?  '/api/v1' : 'http://110.41.177.237:3000/api/v1')
+export const http = new Http('/api/v1')
 
 http.instance.interceptors.request.use(config => {
   const jwt = localStorage.getItem('jwt')
