@@ -33,9 +33,8 @@ export const ItemSummary = defineComponent({
     }
 
     const refItem = ref<HTMLElement>()
-    const {direction, LiIndex} = useSlide(refItem)
+    const {LiIndex, revoke, leftSlide} = useSlide(refItem)
     const remove = async(Itemid:number)=>{
-      console.log('点击删除')
       await http
       .delete(`/items/${Itemid}`, {}, {_autoLoading: true})
       .catch(onError)
@@ -44,18 +43,6 @@ export const ItemSummary = defineComponent({
       itemStore.fetchItems(props.startDate, props.endDate)
     }
     
-    const revokeRM = ref(false)
-
-    const revoke = function(index:number) {
-      console.log('点击左边')
-      if(index === LiIndex.value && leftSlide.value===true){revokeRM.value = true}
-      else {revokeRM.value = false}
-     }
-
-     const leftSlide = computed<boolean>(()=>{
-      if(!revokeRM.value && direction.value==='left'){revokeRM.value = false; return true}
-      else{return false}
-    })
     watch(()=>[props.startDate,props.endDate], ()=>{
       itemStore.$reset()
       itemStore.fetchItems(props.startDate, props.endDate)

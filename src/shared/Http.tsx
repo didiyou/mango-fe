@@ -1,5 +1,4 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { mockItemCreate, mockItemIndex, mockItemIndexBalance, mockItemSummary, mockSession, mockTagEdit, mockTagIndex, mockTagShow, mockValidationCodes } from "../mock/mock";
 import { Toast } from "vant";
 import { JSONValue } from "../env";
 
@@ -29,40 +28,6 @@ export class Http {
   }
 }
 
-const mock = (response: AxiosResponse) => {
-  //if (!isDev()) { return false }
-  return false
-  switch (response.config?._mock) {
-    case 'tagIndex':
-      [response.status, response.data] = mockTagIndex(response.config)
-      return true
-    case 'session':
-      [response.status, response.data] = mockSession(response.config)
-      return true
-    case 'itemCreate':
-      [response.status, response.data] = mockItemCreate(response.config)
-      return true
-    case 'tagShow':
-      [response.status, response.data] = mockTagShow(response.config)
-      return true
-    case 'tagEdit':
-      [response.status, response.data] = mockTagEdit(response.config)
-      return true
-    case 'itemIndex':
-      [response.status, response.data] = mockItemIndex(response.config)
-      return true
-    case 'itemIndexBalance':
-      [response.status, response.data] = mockItemIndexBalance(response.config)
-      return true
-    case 'itemSummary':
-      [response.status, response.data] = mockItemSummary(response.config)
-      return true
-    case 'validationCodes':
-      [response.status, response.data] = mockValidationCodes(response.config)
-      return true
-  }
-  return false
-}
 
 function isDev(){
   if (location.hostname !== 'localhost'
@@ -71,7 +36,7 @@ function isDev(){
   return true
 }
 
-// export const http = new Http(isDev() ?  '/api/v1' : 'http://110.41.177.237:3000/api/v1')
+// export const http = new Http(isDev() ?  '/api/v1' : 'http://110.41.177.237:3001/api/v1')
 export const http = new Http('/api/v1')
 
 http.instance.interceptors.request.use(config => {
@@ -89,21 +54,63 @@ http.instance.interceptors.request.use(config => {
   return config
 })
 
-http.instance.interceptors.response.use((response) => {
-  mock(response)
-  if (response.status >= 400) {
-    throw { response }
-  } else {
-    return response
-  }
-}, (error) => {
-  mock(error.response)
-  if (error.response.status >= 400) {
-    throw error
-  } else {
-    return error.response
-  }
-})
+if(DEBUG){
+  import("../mock/mock").then(({ mockItemCreate, 
+    mockItemIndex, mockItemIndexBalance, mockItemSummary, 
+    mockSession, mockTagEdit, mockTagIndex, mockTagShow, mockValidationCodes })=>{
+      const mock = (response: AxiosResponse) => {
+        if (!isDev()) { return true }
+        switch (response.config?._mock) {
+          case 'tagIndex':
+            [response.status, response.data] = mockTagIndex(response.config)
+            return true
+          case 'session':
+            [response.status, response.data] = mockSession(response.config)
+            return true
+          case 'itemCreate':
+            [response.status, response.data] = mockItemCreate(response.config)
+            return true
+          case 'tagShow':
+            [response.status, response.data] = mockTagShow(response.config)
+            return true
+          case 'tagEdit':
+            [response.status, response.data] = mockTagEdit(response.config)
+            return true
+          case 'itemIndex':
+            [response.status, response.data] = mockItemIndex(response.config)
+            return true
+          case 'itemIndexBalance':
+            [response.status, response.data] = mockItemIndexBalance(response.config)
+            return true
+          case 'itemSummary':
+            [response.status, response.data] = mockItemSummary(response.config)
+            return true
+          case 'validationCodes':
+            [response.status, response.data] = mockValidationCodes(response.config)
+            return true
+        }
+        return false
+      }
+
+      http.instance.interceptors.response.use((response) => {
+        mock(response)
+        if (response.status >= 400) {
+          throw { response }
+        } else {
+          return response
+        }
+      }, (error) => {
+        mock(error.response)
+        if (error.response.status >= 400) {
+          throw error
+        } else {
+          return error.response
+        }
+      })
+    })
+}
+
+
 http.instance.interceptors.response.use(
   response => { return response },
   error => {

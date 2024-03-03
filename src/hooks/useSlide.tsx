@@ -69,6 +69,21 @@ export const useSlide = (element: Ref<HTMLElement | undefined>) => {
     swiping.value = false
   } 
 
+
+  const revokeRM = ref(false)
+
+  const revoke = function(index:number) {
+    if(index === LiIndex.value && leftSlide.value===true){revokeRM.value = true}
+    else {revokeRM.value = false}
+   }
+
+   const leftSlide = computed<boolean>(()=>{
+    if(!revokeRM.value && direction.value==='left'){revokeRM.value = false; return true}
+    else{return false}
+  })
+
+
+
   watch(element, () => {
     element.value?.addEventListener('touchstart', onStart)
     element.value?.addEventListener('touchmove', onMove)
@@ -82,6 +97,6 @@ export const useSlide = (element: Ref<HTMLElement | undefined>) => {
     element.value.removeEventListener('touchend', onEnd)
   })
   return {
-    LiIndex, direction
+    LiIndex, direction, revoke, leftSlide 
   }
 }

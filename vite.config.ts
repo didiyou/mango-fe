@@ -45,6 +45,7 @@ export default defineConfig(({ command })=> {return {
     proxy: {
       '/api/v1': {
         target: 'http://121.196.236.94:3000/',
+        // target: 'http://110.41.177.237:3001/',
       }
     },
     hmr:true
